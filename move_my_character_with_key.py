@@ -7,7 +7,7 @@ tuk_ground = load_image('TUK_GROUND.png')
 
 def handle_events():
     global running
-    global dirx,diry,dir_see
+    global dir_x, dir_y, dir_see
     # fill here
 
     events = get_events()
@@ -16,24 +16,24 @@ def handle_events():
             running = False
         elif event.type==SDL_KEYDOWN:
             if event.key==SDLK_RIGHT:
-                dirx += 1
+                dir_x += 1
             elif event.key == SDLK_LEFT:
-                dirx -= -1
+                dir_x -= 1
             elif event.key==SDLK_UP:
-                diry+=1
+                dir_y+=1
             elif event.key==SDLK_DOWN:
-                diry-=1
+                dir_y-=1
         elif event.type==SDL_KEYUP:
             if event.key==SDLK_RIGHT:
-                dirx -= 1
+                dir_x -= 1
                 dir_see = 1
             elif event.key == SDLK_LEFT:
-                dirx += -1
+                dir_x += 1
                 dir_see = -1
             elif event.key==SDLK_UP:
-                diry-=1
+                dir_y-=1
             elif event.key==SDLK_DOWN:
-                diry+=1
+                dir_y+=1
 
 
         # fill here
@@ -43,18 +43,22 @@ running = True
 x = 800 // 2
 y=800//2
 frame_see,frame_run,frame_up,frame_down=0,0,0,0
-dirx,diry=0,0
+dir_x,dir_y=0,0
 dir_see = 1
 
 while running:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH//2,TUK_HEICHT//2)
 
-    if dirx == 0 and diry == 0:
+    x += dir_x*7
+    y += dir_y*7
+    if dir_x == 0 and dir_y == 0:   # 대기 상태
         if dir_see == 1:
             character.clip_draw(29*frame_see,848,29,30,x,y,100,100)
+        elif dir_see == -1:
+            character.clip_composite_draw(29*frame_see,848,29,30,0,'h',x,y,100,100)
         frame_see = (frame_see + 1) % 10
-    elif dirx>0:
+    elif dir_x>0:   # 오른쪽으로 이동
         if frame_run <= 6:
             character.clip_draw(26 * frame_run, 701, 26, 30, x, y, 100, 100)
         elif frame_run<=10:
@@ -62,22 +66,19 @@ while running:
         elif frame_run>10:
             character.clip_draw(26*6+31*4+26*(frame_run-11),701,26,30,x,y,100,100)
         frame_run = (frame_run + 1) % 12
-    elif dirx<0:
+    elif dir_x<0:   # 왼쪽으로 이동
         if frame_run <= 6:
-            character.clip_composite_draw(26 * frame_run, 701, 26, 30, x, y, 100, 100)
-            character.clip_draw(26 * frame_run, 701, 26, 30, x, y, 100, 100)
+            character.clip_composite_draw(26 * frame_run, 701, 26, 30,0,'h', x, y, 100, 100)
         elif frame_run <= 10:
-            character.clip_draw(26 * 6 + (frame_run - 7) * 31, 701, 31, 30, x, y, 100, 100)
+            character.clip_composite_draw(26 * 6 + (frame_run - 7) * 31, 701, 31, 30,0,'h',x, y, 100, 100)
         elif frame_run > 10:
-            character.clip_draw(26 * 6 + 31 * 4 + 26 * (frame_run - 11), 701, 26, 30, x, y, 100, 100)
+            character.clip_composite_draw(26 * 6 + 31 * 4 + 26 * (frame_run - 11), 701, 26, 30,0,'h',x, y, 100, 100)
         frame_run = (frame_run + 1) % 12
 
-    # 그리기
 
+    # 그리기
     update_canvas()
     handle_events()
-    x+=dirx*7
-    y+=diry*7
     delay(0.1)
 
 # fill here
