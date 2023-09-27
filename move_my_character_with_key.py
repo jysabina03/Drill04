@@ -78,7 +78,11 @@ while running:
         character.clip_draw(24 * frame_up, 463, 24, 30, x, y, 100, 100)
         frame_up = (frame_up + 1) % 10
     elif dir_y < 0:  # 아래로 이동
-        character.clip_draw(29 * frame_down, 213, 29, 30, x, y, 100, 100)
+        if dir_see == 1:
+            character.clip_draw(29 * frame_down, 213, 29, 30, x, y, 100, 100)
+        elif dir_see == -1:
+            character.clip_composite_draw(29*frame_down,213,29,30,0,'h',x,y,100,100)
+
         frame_down = (frame_down + 1) % 10
 
 
