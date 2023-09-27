@@ -52,6 +52,11 @@ while running:
 
     x += dir_x*10
     y += dir_y*10
+    if x<0 or x>TUK_WIDTH:
+        x-=dir_x*10
+    if y<0 or y>TUK_HEICHT:
+        y-=dir_y*10
+        
     if dir_x == 0 and dir_y == 0:   # 대기 상태
         if dir_see == 1:
             character.clip_draw(29*frame_see,848,29,30,x,y,100,100)
