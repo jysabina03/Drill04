@@ -50,8 +50,8 @@ while running:
     clear_canvas()
     tuk_ground.draw(TUK_WIDTH//2,TUK_HEICHT//2)
 
-    x += dir_x*7
-    y += dir_y*7
+    x += dir_x*10
+    y += dir_y*10
     if dir_x == 0 and dir_y == 0:   # 대기 상태
         if dir_see == 1:
             character.clip_draw(29*frame_see,848,29,30,x,y,100,100)
@@ -74,6 +74,12 @@ while running:
         elif frame_run > 10:
             character.clip_composite_draw(26 * 6 + 31 * 4 + 26 * (frame_run - 11), 701, 26, 30,0,'h',x, y, 100, 100)
         frame_run = (frame_run + 1) % 12
+    elif dir_y > 0:  # 위로 이동
+        character.clip_draw(24 * frame_up, 463, 24, 30, x, y, 100, 100)
+        frame_up = (frame_up + 1) % 10
+    elif dir_y < 0:  # 아래로 이동
+        character.clip_draw(29 * frame_down, 213, 29, 30, x, y, 100, 100)
+        frame_down = (frame_down + 1) % 10
 
 
     # 그리기
